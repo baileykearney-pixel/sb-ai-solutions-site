@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<!-- ============================================================
+     This site is ready to publish as-is.
+     The ONE optional thing left: your live chat bubble.
+     When your lead-catcher app is deployed, paste its embed
+     snippet where you see EDIT-CHAT near the bottom of this file.
+     Everything else (name, contact, booking-by-email) is done.
+     ============================================================ -->
+
+<title>SB AI Solutions — AI front desk for mortgage brokers</title>
+<meta name="description" content="An AI assistant that answers your missed calls and after-hours enquiries in seconds, qualifies the lead, and books the appointment — so you stop losing deals to whoever replied first." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --ink:#0E1A2B;          /* midnight base */
+    --ink-2:#0A1421;        /* deeper panel  */
+    --ink-3:#13233A;        /* raised panel  */
+    --lamp:#F5B14C;         /* warm lamp accent */
+    --lamp-soft:#FFC978;
+    --cream:#F3EEE4;        /* text */
+    --slate:#8CA0B8;        /* muted */
+    --teal:#5FD0C5;         /* success / booked */
+    --line:rgba(243,238,228,.12);
+    --line-2:rgba(243,238,228,.07);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--ink);color:var(--cream);
+    font-family:"IBM Plex Sans",system-ui,sans-serif;
+    line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+  }
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+  .mono{font-family:"IBM Plex Mono",monospace}
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--lamp);display:inline-flex;align-items:center;gap:9px;
+  }
+  .eyebrow::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--lamp);
+    box-shadow:0 0 0 4px rgba(245,177,76,.16);}
+  h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:500;letter-spacing:-.01em;line-height:1.05}
+  a{color:inherit;text-decoration:none}
+
+  /* buttons */
+  .btn{
+    display:inline-flex;align-items:center;gap:9px;font-family:"IBM Plex Sans",sans-serif;
+    font-weight:600;font-size:15px;padding:14px 22px;border-radius:12px;cursor:pointer;border:none;
+    transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+  }
+  .btn-primary{background:var(--lamp);color:#2A1B06;box-shadow:0 8px 30px -8px rgba(245,177,76,.6)}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 40px -8px rgba(245,177,76,.7)}
+  .btn-ghost{background:transparent;color:var(--cream);border:1px solid var(--line)}
+  .btn-ghost:hover{border-color:var(--lamp);color:var(--lamp)}
+
+  /* nav */
+  nav{position:sticky;top:0;z-index:50;background:rgba(14,26,43,.72);backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line-2)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:66px}
+  .logo{font-family:"Fraunces",serif;font-size:21px;font-weight:600;display:flex;align-items:center;gap:9px}
+  .logo .dot{width:9px;height:9px;border-radius:50%;background:var(--lamp);box-shadow:0 0 12px 2px rgba(245,177,76,.7)}
+  .nav-links{display:flex;align-items:center;gap:28px}
+  .nav-links a{font-size:14.5px;color:var(--slate)}
+  .nav-links a:hover{color:var(--cream)}
+  .nav-cta{padding:10px 18px;font-size:14px}
+  @media(max-width:720px){.nav-links a:not(.nav-cta){display:none}}
+
+  /* hero */
+  .hero{position:relative;padding:88px 0 96px;overflow:hidden}
+  .hero::before{content:"";position:absolute;top:-30%;right:-10%;width:60vw;height:60vw;
+    background:radial-gradient(circle, rgba(245,177,76,.16) 0%, rgba(245,177,76,0) 62%);pointer-events:none}
+  .hero-grid{display:grid;grid-template-columns:1.08fr .92fr;gap:56px;align-items:center;position:relative}
+  @media(max-width:900px){.hero-grid{grid-template-columns:1fr;gap:44px}}
+  .hero h1{font-size:clamp(38px,5.4vw,62px);margin:22px 0 20px}
+  .hero h1 em{font-style:italic;color:var(--lamp)}
+  .lede{font-size:clamp(17px,2vw,19.5px);color:#CBD5E3;max-width:33ch;margin-bottom:32px}
+  .hero-cta{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+  .hero-cta .subnote{font-size:13px;color:var(--slate);margin-left:2px}
+
+  /* hero chat mockup (the signature: a lead caught at night) */
+  .device{
+    background:linear-gradient(180deg,var(--ink-3),var(--ink-2));border:1px solid var(--line);
+    border-radius:22px;padding:20px 20px 22px;box-shadow:0 40px 90px -30px rgba(0,0,0,.7),0 0 0 1px rgba(245,177,76,.06);
+    position:relative;
+  }
+  .device::after{content:"";position:absolute;inset:0;border-radius:22px;pointer-events:none;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
+  .dev-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;
+    padding-bottom:14px;border-bottom:1px solid var(--line-2)}
+  .dev-id{display:flex;align-items:center;gap:11px}
+  .dev-av{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--lamp),#E8873B);
+    display:flex;align-items:center;justify-content:center;color:#2A1B06;font-weight:600;font-family:"Fraunces",serif}
+  .dev-id b{font-size:14.5px;font-weight:600}
+  .dev-id .st{font-size:11.5px;color:var(--teal);display:flex;align-items:center;gap:5px}
+  .dev-id .st::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--teal);box-shadow:0 0 8px var(--teal)}
+  .dev-time{font-size:11.5px;color:var(--slate)}
+  .msgs{display:flex;flex-direction:column;gap:10px}
+  .bubble{max-width:82%;padding:10px 14px;border-radius:14px;font-size:14px;line-height:1.45;opacity:0;transform:translateY(8px)}
+  .bubble.them{background:#1C2E47;border-bottom-left-radius:5px;align-self:flex-start}
+  .bubble.us{background:var(--lamp);color:#2A1B06;border-bottom-right-radius:5px;align-self:flex-end;font-weight:500}
+  .booked{margin-top:6px;align-self:stretch;background:rgba(95,208,197,.1);border:1px solid rgba(95,208,197,.34);
+    border-radius:12px;padding:12px 14px;opacity:0;transform:translateY(8px)}
+  .booked .bk-h{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--teal);font-weight:600;
+    font-family:"IBM Plex Mono",monospace;letter-spacing:.03em;margin-bottom:6px}
+  .booked .bk-h::before{content:"✓";display:inline-flex;width:16px;height:16px;border-radius:50%;
+    background:var(--teal);color:var(--ink);align-items:center;justify-content:center;font-size:11px}
+  .booked .bk-row{font-size:13px;color:#D7E3E1}
+  .booked .bk-row b{color:var(--cream)}
+  .reveal-in{opacity:1 !important;transform:none !important;transition:opacity .5s ease, transform .5s ease}
+
+  /* stat band */
+  .stats{border-top:1px solid var(--line-2);border-bottom:1px solid var(--line-2);background:var(--ink-2)}
+  .stats-in{display:grid;grid-template-columns:repeat(3,1fr);gap:0}
+  @media(max-width:720px){.stats-in{grid-template-columns:1fr}}
+  .stat{padding:34px 26px;border-right:1px solid var(--line-2)}
+  .stat:last-child{border-right:none}
+  @media(max-width:720px){.stat{border-right:none;border-bottom:1px solid var(--line-2)}}
+  .stat .n{font-family:"Fraunces",serif;font-size:44px;font-weight:600;color:var(--lamp);line-height:1}
+  .stat .l{font-size:14px;color:var(--slate);margin-top:10px;max-width:26ch}
+
+  section.block{padding:96px 0}
+  .sec-head{max-width:60ch;margin-bottom:52px}
+  .sec-head h2{font-size:clamp(30px,4vw,44px);margin:18px 0 0}
+
+  /* features */
+  .feat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+  @media(max-width:760px){.feat-grid{grid-template-columns:1fr}}
+  .feat{background:var(--ink-2);border:1px solid var(--line-2);border-radius:16px;padding:26px 24px;
+    transition:border-color .2s ease, transform .2s ease}
+  .feat:hover{border-color:rgba(245,177,76,.34);transform:translateY(-3px)}
+  .feat .ic{width:40px;height:40px;border-radius:11px;background:rgba(245,177,76,.12);color:var(--lamp);
+    display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:19px}
+  .feat h3{font-size:20px;margin-bottom:8px;font-weight:600}
+  .feat p{font-size:14.5px;color:var(--slate)}
+  .safe-note{margin-top:26px;font-size:14px;color:var(--slate);display:flex;gap:10px;align-items:flex-start}
+  .safe-note b{color:var(--teal)}
+
+  /* how it works */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;counter-reset:s}
+  @media(max-width:760px){.steps{grid-template-columns:1fr}}
+  .step{position:relative;padding-top:22px;border-top:2px solid var(--line)}
+  .step .num{font-family:"IBM Plex Mono",monospace;font-size:13px;color:var(--lamp);letter-spacing:.1em}
+  .step h3{font-size:21px;margin:14px 0 9px;font-weight:600}
+  .step p{font-size:14.5px;color:var(--slate)}
+
+  /* see it live */
+  .live{background:linear-gradient(180deg,var(--ink-2),var(--ink));border:1px solid var(--line-2);
+    border-radius:24px;padding:52px 44px;text-align:center;position:relative;overflow:hidden}
+  .live::before{content:"";position:absolute;bottom:-40%;left:50%;transform:translateX(-50%);
+    width:70%;height:80%;background:radial-gradient(circle,rgba(245,177,76,.14),transparent 65%)}
+  .live h2{font-size:clamp(28px,3.6vw,40px);position:relative}
+  .live p{color:var(--slate);max-width:46ch;margin:16px auto 0;position:relative;font-size:16px}
+  .live .arrow{position:relative;margin-top:26px;font-family:"IBM Plex Mono",monospace;font-size:13.5px;
+    color:var(--lamp);display:inline-flex;align-items:center;gap:8px}
+
+  /* book */
+  .book{text-align:center}
+  .book h2{font-size:clamp(32px,4.4vw,50px);max-width:18ch;margin:18px auto 0}
+  .book p{color:var(--slate);max-width:44ch;margin:18px auto 30px;font-size:16px}
+  .book .btn-primary{font-size:16.5px;padding:17px 30px}
+  .book .fallback{margin-top:20px;font-size:14.5px;color:var(--slate)}
+  .book .fallback a{color:var(--lamp);border-bottom:1px solid rgba(245,177,76,.4)}
+
+  footer{border-top:1px solid var(--line-2);padding:40px 0;margin-top:20px}
+  .foot-in{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+  .foot-in .logo{font-size:18px}
+  .foot-c{font-size:13.5px;color:var(--slate)}
+
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none !important;transition:none !important}
+    .bubble,.booked{opacity:1;transform:none}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap nav-in">
+    <!-- EDIT-NAME (logo) -->
+    <a class="logo" href="#"><span class="dot"></span>SB AI Solutions</a>
+    <div class="nav-links">
+      <a href="#how">How it works</a>
+      <a href="#live">See it live</a>
+      <a class="btn btn-primary nav-cta" href="#book">Book a demo</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">Always on · even at 2am</span>
+      <h1>The front desk that <em>never clocks off.</em></h1>
+      <p class="lede">An AI assistant for mortgage brokers that answers your missed calls and after-hours enquiries in seconds — then qualifies the lead and books the appointment.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#book">Book a 15-minute demo</a>
+        <a class="btn btn-ghost" href="#live">See it in action</a>
+      </div>
+      <div class="subnote mono" style="margin-top:16px">Free 7-day trial · no card · set up with your name on it</div>
+    </div>
+
+    <!-- SIGNATURE: a lead caught & booked after hours -->
+    <div class="device" id="device">
+      <div class="dev-top">
+        <div class="dev-id">
+          <div class="dev-av">SB</div>
+          <div>
+            <b>SB AI Solutions</b>
+            <div class="st">online</div>
+          </div>
+        </div>
+        <div class="dev-time mono">Sat · 9:47pm</div>
+      </div>
+      <div class="msgs" id="msgs">
+        <div class="bubble them" data-d="200">Hi, saw your page — are you able to help with a refinance? Rates are killing us 😩</div>
+        <div class="bubble us" data-d="900">Absolutely — happy to help. Are you refinancing your home loan, or an investment?</div>
+        <div class="bubble them" data-d="1700">Our home. Owe about $610k, place is worth ~$900k.</div>
+        <div class="bubble us" data-d="2500">Great position to be in. What's the best mobile for one of our brokers to call you — and a time that suits?</div>
+        <div class="bubble them" data-d="3300">0412 445 990 — tomorrow morning works.</div>
+        <div class="booked" data-d="4100">
+          <div class="bk-h">Appointment booked · broker notified</div>
+          <div class="bk-row"><b>Jordan M.</b> · Refinance · ~$610k / $900k value</div>
+          <div class="bk-row">Sun 10:00am · call 0412 445 990</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="stats">
+  <div class="wrap stats-in">
+    <div class="stat"><div class="n">78%</div><div class="l">of people go with the first broker to respond</div></div>
+    <div class="stat"><div class="n">62%</div><div class="l">of enquiries arrive after hours, when you're offline</div></div>
+    <div class="stat"><div class="n">15h+</div><div class="l">average time a broker takes to reply to a new lead</div></div>
+  </div>
+</section>
+
+<section class="block" id="what">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">What it does</span>
+      <h2>It catches the leads you're already losing.</h2>
+    </div>
+    <div class="feat-grid">
+      <div class="feat"><div class="ic">⚡</div><h3>Answers in seconds</h3><p>The moment someone calls and misses you, or messages after hours, it replies instantly — day or night, seven days.</p></div>
+      <div class="feat"><div class="ic">◇</div><h3>Qualifies every lead</h3><p>Buying or refinancing, rough numbers, timeframe, pre-approval — it has a real conversation and sorts the serious ones.</p></div>
+      <div class="feat"><div class="ic">▦</div><h3>Books your calendar</h3><p>Straight into your diary, only inside your working hours, and it checks you're free first — so no double-bookings.</p></div>
+      <div class="feat"><div class="ic">✉</div><h3>Sends you the lead</h3><p>Name, number, and exactly what they want land with you the second it's captured. You just show up to the appointment.</p></div>
+    </div>
+    <div class="safe-note"><span>🛡</span><div><b>Licence-safe by design.</b> It never quotes interest rates, borrowing capacity, or recommends products — anything like that, it hands straight to you.</div></div>
+  </div>
+</section>
+
+<section class="block" id="how" style="background:var(--ink-2)">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">How it works</span>
+      <h2>Three steps. Then you stop thinking about it.</h2>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="num">STEP 01</div><h3>A lead slips through</h3><p>A call comes in while you're with a client, or someone enquires at 10pm on a Sunday.</p></div>
+      <div class="step"><div class="num">STEP 02</div><h3>Your front desk picks up</h3><p>It chats like a person, qualifies them, and books them into your calendar — instantly.</p></div>
+      <div class="step"><div class="num">STEP 03</div><h3>You wake up to a booking</h3><p>A confirmed appointment and the full lead are waiting for you. No chasing, no lost deals.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="live">
+  <div class="wrap">
+    <div class="live">
+      <span class="eyebrow" style="justify-content:center">Try it yourself</span>
+      <h2>See exactly what your clients would experience.</h2>
+      <p>Chat with the assistant in the bottom corner — it's the same one that would sit on your site. Ask it anything a borrower might.</p>
+      <div class="arrow">chat with it, bottom-right ↘</div>
+    </div>
+  </div>
+</section>
+
+<section class="block book" id="book">
+  <div class="wrap">
+    <span class="eyebrow" style="justify-content:center">Book a demo</span>
+    <h2>See it running with your name on it.</h2>
+    <p>Send me a message and I'll show you it running live — 15 minutes — then set you up with a free 7-day trial on your own site. No card, no commitment.</p>
+    <!-- Emails you directly — no calendar needed -->
+    <a class="btn btn-primary" href="mailto:bailey.kearney@gmail.com?subject=Demo%20request%20%E2%80%94%20SB%20AI%20Solutions&body=Hi%20Bailey%2C%0A%0AI%27d%20like%20to%20see%20a%20quick%2015-minute%20demo.%20A%20bit%20about%20me%3A%0A%0A">Email me to book a demo</a>
+    <div class="fallback">Or reach me directly — <a href="mailto:bailey.kearney@gmail.com">bailey.kearney@gmail.com</a></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-in">
+    <!-- EDIT-NAME (footer) -->
+    <a class="logo" href="#"><span class="dot"></span>SB AI Solutions</a>
+    <div class="foot-c">Built for Australian mortgage brokers. · © 2026</div>
+  </div>
+</footer>
+
+<script>
+  // Reveal hero conversation in sequence (respects reduced-motion via CSS)
+  (function(){
+    var device = document.getElementById('device');
+    var items = Array.prototype.slice.call(document.querySelectorAll('#msgs [data-d]'));
+    function play(){
+      items.forEach(function(el){
+        var d = parseInt(el.getAttribute('data-d'),10) || 0;
+        setTimeout(function(){ el.classList.add('reveal-in'); }, d);
+      });
+    }
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){ if(e.isIntersecting){ play(); io.disconnect(); }});
+      },{threshold:.4});
+      io.observe(device);
+    } else { play(); }
+  })();
+
+  // Scroll-reveal for sections
+  (function(){
+    var els = document.querySelectorAll('.feat, .step, .stat, .sec-head, .live, .book > .wrap > *');
+    els.forEach(function(el){ el.style.opacity=0; el.style.transform='translateY(14px)'; el.style.transition='opacity .6s ease, transform .6s ease'; });
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){ if(e.isIntersecting){ e.target.style.opacity=1; e.target.style.transform='none'; io.unobserve(e.target); }});
+      },{threshold:.15});
+      els.forEach(function(el){ io.observe(el); });
+    } else { els.forEach(function(el){ el.style.opacity=1; el.style.transform='none'; }); }
+  })();
+</script>
+
+<!-- ============================================================
+     EDIT-CHAT  ·  YOUR LIVE CHAT BUBBLE
+     Paste your Railway chat-widget embed snippet on the line
+     below (the one Claude Code gave you). It will load your real
+     interactive assistant as a bubble in the bottom-right corner.
+     Until you paste it, the hero above still shows it off.
+     ============================================================ -->
+<!-- <script src="https://YOUR-APP.up.railway.app/embed.js"></script> -->
+
+</body>
+</html>
