@@ -169,6 +169,22 @@
   .book .btn-primary{font-size:16.5px;padding:17px 30px}
   .book .fallback{margin-top:20px;font-size:14.5px;color:var(--slate)}
   .book .fallback a{color:var(--lamp);border-bottom:1px solid rgba(245,177,76,.4)}
+  /* book form (works for everyone — no mail app needed) */
+  .book-form{max-width:520px;margin:6px auto 0;text-align:left}
+  .bf-row{display:flex;gap:12px}
+  @media(max-width:560px){.bf-row{flex-direction:column}}
+  .bf-input{width:100%;margin-top:12px;background:var(--ink-3);border:1px solid var(--line);
+    border-radius:12px;padding:14px 15px;color:var(--cream);font-family:"IBM Plex Sans",sans-serif;
+    font-size:15px;outline:none;transition:border-color .15s ease, box-shadow .15s ease}
+  .bf-input::placeholder{color:var(--slate)}
+  .bf-input:focus{border-color:var(--lamp);box-shadow:0 0 0 3px rgba(245,177,76,.16)}
+  .bf-area{resize:vertical;min-height:92px;line-height:1.5}
+  .bf-hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+  .bf-submit{width:100%;justify-content:center;margin-top:14px;font-size:16.5px;padding:16px 30px}
+  .bf-submit[disabled]{opacity:.6;cursor:default;transform:none;box-shadow:none}
+  .bf-status{margin-top:14px;font-size:14.5px;text-align:center;min-height:1.2em}
+  .bf-status.ok{color:var(--teal)}
+  .bf-status.err{color:var(--lamp-soft)}
 
   footer{border-top:1px solid var(--line-2);padding:40px 0;margin-top:20px}
   .foot-in{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
@@ -290,9 +306,19 @@
     <span class="eyebrow" style="justify-content:center">Book a demo</span>
     <h2>See it running with your name on it.</h2>
     <p>Send me a message and I'll show you it running live — 15 minutes — then set you up with a free 7-day trial on your own site. No card, no commitment.</p>
-    <!-- Emails you directly — no calendar needed -->
-    <a class="btn btn-primary" href="mailto:teamsbaisolutions@gmail.com?subject=Demo%20request%20%E2%80%94%20SB%20AI%20Solutions&body=Hi%20Bailey%2C%0A%0AI%27d%20like%20to%20see%20a%20quick%2015-minute%20demo.%20A%20bit%20about%20me%3A%0A%0A">Email me to book a demo</a>
-    <div class="fallback">Or reach me directly — <a href="mailto:teamsbaisolutions@gmail.com">teamsbaisolutions@gmail.com</a></div>
+    <!-- Web form — emails the enquiry straight to you, no mail app needed -->
+    <form id="bookForm" class="book-form" novalidate>
+      <div class="bf-row">
+        <input class="bf-input" type="text" name="name" placeholder="Your name" required autocomplete="name" />
+        <input class="bf-input" type="email" name="email" placeholder="Your email" required autocomplete="email" />
+      </div>
+      <textarea class="bf-input bf-area" name="message" placeholder="A bit about you — your brokerage, and a good time for a 15-min demo."></textarea>
+      <!-- honeypot: bots fill this, real people don't -->
+      <input class="bf-hp" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" />
+      <button class="btn btn-primary bf-submit" type="submit">Send &amp; book my demo</button>
+      <div class="bf-status" id="bookStatus" role="status" aria-live="polite"></div>
+    </form>
+    <div class="fallback">Prefer email? <a href="mailto:teamsbaisolutions@gmail.com">teamsbaisolutions@gmail.com</a></div>
   </div>
 </section>
 
@@ -333,6 +359,54 @@
       },{threshold:.15});
       els.forEach(function(el){ io.observe(el); });
     } else { els.forEach(function(el){ el.style.opacity=1; el.style.transform='none'; }); }
+  })();
+
+  // Book-a-demo form → emails the enquiry via FormSubmit (no backend needed).
+  (function(){
+    var form = document.getElementById('bookForm');
+    if(!form) return;
+    var statusEl = document.getElementById('bookStatus');
+    var btn = form.querySelector('.bf-submit');
+    var ENDPOINT = 'https://formsubmit.co/ajax/teamsbaisolutions@gmail.com';
+
+    function setStatus(msg, cls){ statusEl.textContent = msg; statusEl.className = 'bf-status' + (cls ? ' ' + cls : ''); }
+
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      if(form._honey && form._honey.value) return; // bot trap
+      var name = form.name.value.trim();
+      var email = form.email.value.trim();
+      if(!name || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+        setStatus('Please add your name and a valid email.', 'err');
+        return;
+      }
+      var original = btn.textContent;
+      btn.disabled = true; btn.textContent = 'Sending…'; setStatus('', '');
+
+      fetch(ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          name: name,
+          email: email,
+          message: form.message.value.trim(),
+          _subject: 'New demo request — SB AI Solutions',
+          _template: 'table'
+        })
+      })
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+        if(data && (data.success === true || String(data.success) === 'true')){
+          form.reset();
+          btn.textContent = 'Sent ✓';
+          setStatus("✓ Thanks — I've got it and I'll be in touch shortly.", 'ok');
+        } else { throw new Error('unexpected response'); }
+      })
+      .catch(function(){
+        btn.disabled = false; btn.textContent = original;
+        setStatus("That didn't go through — please email teamsbaisolutions@gmail.com and I'll sort it.", 'err');
+      });
+    });
   })();
 </script>
 
