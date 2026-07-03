@@ -417,10 +417,32 @@
      interactive assistant as a bubble in the bottom-right corner.
      Until you paste it, the hero above still shows it off.
      ============================================================ -->
-<script src="https://pacifica-lead-catcher-production.up.railway.app/embed.js" async></script>
+<!-- Two floating bubbles, both rendered by the booking bot's configurable embed
+     loader. The live lead-catcher app is NOT modified — the right bubble simply
+     opens it in a window. -->
 
-<!-- SB AI Solutions "Book a demo" bubble (bottom-LEFT so it doesn't overlap the demo bubble on the right) -->
-<script src="https://sb-booking-bot-production.up.railway.app/embed.js" data-position="left" async></script>
+<!-- LEFT: book a call with SB AI Solutions -->
+<script
+  src="https://sb-booking-bot-production.up.railway.app/embed.js"
+  data-label="Book a call"
+  data-sublabel="with us now"
+  data-position="left"
+  data-icon="calendar"
+  data-nudge="👋 Want to see it in action? Book a quick call with us."
+  async
+></script>
+
+<!-- RIGHT: let visitors test our AI product live (opens the demo assistant) -->
+<script
+  src="https://sb-booking-bot-production.up.railway.app/embed.js"
+  data-app="https://pacifica-lead-catcher-production.up.railway.app"
+  data-label="Test our AI bot"
+  data-sublabel="See it live"
+  data-position="right"
+  data-color="#0D5A8A"
+  data-icon="chat"
+  async
+></script>
 
 </body>
 </html>
