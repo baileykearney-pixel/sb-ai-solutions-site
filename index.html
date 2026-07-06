@@ -306,21 +306,37 @@
     <span class="eyebrow" style="justify-content:center">Book a demo</span>
     <h2>See it running with your name on it.</h2>
     <p>Send me a message and I'll show you it running live — 15 minutes — then set you up with a free 7-day trial on your own site. No card, no commitment.</p>
-    <!-- Web form — emails the enquiry straight to you, no mail app needed -->
-    <form id="bookForm" class="book-form" novalidate>
-      <div class="bf-row">
-        <input class="bf-input" type="text" name="name" placeholder="Your name" required autocomplete="name" />
-        <input class="bf-input" type="email" name="email" placeholder="Your email" required autocomplete="email" />
-      </div>
-      <textarea class="bf-input bf-area" name="message" placeholder="A bit about you — your brokerage, and a good time for a 15-min demo."></textarea>
-      <!-- honeypot: bots fill this, real people don't -->
-      <input class="bf-hp" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" />
-      <button class="btn btn-primary bf-submit" type="submit">Send &amp; book my demo</button>
-      <div class="bf-status" id="bookStatus" role="status" aria-live="polite"></div>
-    </form>
+    <!-- Opens the "Book a call" chat bubble (booking bot) — not an email -->
+    <button type="button" class="btn btn-primary" onclick="openBookingChat()">Book a 15-minute demo</button>
     <div class="fallback">Prefer email? <a href="mailto:teamsbaisolutions@gmail.com">teamsbaisolutions@gmail.com</a></div>
   </div>
 </section>
+
+<script>
+  // Opens the "Book a call" chat bubble (the booking bot) when the demo button
+  // is clicked. It finds the bubble's launcher (the bottom-left one) and opens
+  // it. If the bubble hasn't loaded (e.g. blocked), it falls back to opening the
+  // booking page directly so the button always leads somewhere useful.
+  function openBookingChat() {
+    var tries = 0;
+    (function attempt() {
+      var booking = null;
+      document.querySelectorAll(".sbb-launcher").forEach(function (l) {
+        if (l.style.left) booking = l; // the bottom-left bubble = the booking bot
+      });
+      if (booking) {
+        if (!booking.classList.contains("sbb-open")) booking.click();
+      } else if (tries++ < 12) {
+        setTimeout(attempt, 250); // the embed bubble may still be loading
+      } else {
+        window.open(
+          "https://cal.com/sbaisolutions-xz2llq/sb-ai-solutions-demo",
+          "_blank"
+        );
+      }
+    })();
+  }
+</script>
 
 <footer>
   <div class="wrap foot-in">
