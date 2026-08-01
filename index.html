@@ -210,8 +210,12 @@
   .roi-kicker{font-size:13.5px;color:var(--teal);font-weight:600}
 
   /* ===== Pricing ===== */
-  .price-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:760px;margin:0 auto}
-  @media(max-width:700px){.price-grid{grid-template-columns:1fr}}
+  .price-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;max-width:1040px;margin:0 auto}
+  @media(max-width:900px){.price-grid{grid-template-columns:1fr;max-width:480px}}
+  .price-card.pilot-card{border-color:rgba(95,208,197,.6);background:linear-gradient(180deg,rgba(95,208,197,.09),var(--ink-2) 55%)}
+  .price-card.pilot-card .price-tag{background:var(--teal);color:#06231f}
+  .price-card.pilot-card .price-amt{color:var(--teal)}
+  .price-free-note{font-size:12.5px;color:var(--teal);font-weight:600;margin-top:10px}
   .price-card{background:var(--ink-2);border:1px solid var(--line-2);border-radius:20px;padding:30px 28px;text-align:left;position:relative}
   .price-card.founding{border-color:rgba(245,177,76,.55);background:linear-gradient(180deg,rgba(245,177,76,.07),var(--ink-2) 55%)}
   .price-tag{position:absolute;top:-13px;left:24px;background:var(--lamp);color:#2A1B06;font-size:11.5px;font-weight:700;
@@ -264,6 +268,7 @@
     <div class="nav-links">
       <a href="#how">How it works</a>
       <a href="#live">See it live</a>
+      <a href="#roi">ROI calculator</a>
       <a href="#pricing">Pricing</a>
       <a href="#about">About</a>
       <a class="btn btn-primary nav-cta" href="#book">Book a demo</a>
@@ -280,8 +285,9 @@
       <div class="hero-cta">
         <a class="btn btn-primary" href="#book">Book a 15-minute demo</a>
         <a class="btn btn-ghost" href="#live">See it in action</a>
+        <a class="btn btn-ghost" href="#roi">📊 What's it costing you?</a>
       </div>
-      <div class="subnote mono" style="margin-top:16px">Free 7-day trial · no card · set up with your name on it</div>
+      <div class="subnote mono" style="margin-top:16px">Free 60-day pilot for the first 3 brokers · no card · no commitment</div>
     </div>
 
     <!-- SIGNATURE: a lead caught & booked after hours -->
@@ -412,6 +418,19 @@
       <p style="color:var(--slate);max-width:52ch;margin:16px auto 0;font-size:15.5px">I'm looking for a small number of brokers to be the first to run this — and I want to earn your trust before I ask for full price.</p>
     </div>
     <div class="price-grid">
+      <div class="price-card pilot-card">
+        <div class="price-tag">First 3 brokers</div>
+        <div class="price-name">Free 60-day pilot</div>
+        <div class="price-amt">$0<span> for 60 days</span></div>
+        <div class="price-sub">Prove it on your real leads before paying a cent.</div>
+        <ul class="price-feats">
+          <li>Full setup on your own site, by me</li>
+          <li>See exactly what it catches &amp; books</li>
+          <li>No cost, no card, no commitment</li>
+          <li>In return: share your results as a case study (with your permission)</li>
+        </ul>
+        <div class="price-free-note">60 days free. Then decide.</div>
+      </div>
       <div class="price-card founding">
         <div class="price-tag">First 10 brokers</div>
         <div class="price-name">Founding member</div>
@@ -435,12 +454,8 @@
         </ul>
       </div>
     </div>
-    <div class="pilot">
-      <div class="ic">🛡</div>
-      <p><b>Want proof first? The first 3 brokers get a free 60-day pilot.</b> I set it up on your site, you see exactly what it catches and books — no cost, no commitment. In return, I ask to share your results (with your permission) as a case study.</p>
-    </div>
     <div style="margin-top:28px">
-      <a class="btn btn-primary" href="#book">Claim a founding spot</a>
+      <a class="btn btn-primary" href="#book">Start my free 60-day pilot</a>
     </div>
   </div>
 </section>
@@ -476,7 +491,7 @@
   <div class="wrap">
     <span class="eyebrow" style="justify-content:center">Book a demo</span>
     <h2>See it running with your name on it.</h2>
-    <p>Send me a message and I'll show you it running live — 15 minutes — then set you up with a free 7-day trial on your own site. No card, no commitment.</p>
+    <p>Send me a message and I'll show you it running live — 15 minutes. First 3 brokers get a <b style="color:var(--teal)">free 60-day pilot</b> on their own site. No card, no commitment.</p>
     <!-- Opens the "Book a call" chat bubble (booking bot) — not an email -->
     <button type="button" class="btn btn-primary" onclick="openBookingChat()">Book a 15-minute demo</button>
     <div class="fallback">Prefer email? <a href="mailto:teamsbaisolutions@gmail.com">teamsbaisolutions@gmail.com</a></div>
