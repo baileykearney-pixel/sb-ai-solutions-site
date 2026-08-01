@@ -186,6 +186,64 @@
   .bf-status.ok{color:var(--teal)}
   .bf-status.err{color:var(--lamp-soft)}
 
+  /* ===== ROI calculator ===== */
+  .roi-box{background:var(--ink-3);border:1px solid var(--line);border-radius:20px;padding:34px 30px;
+    display:grid;grid-template-columns:1.05fr .95fr;gap:40px}
+  @media(max-width:820px){.roi-box{grid-template-columns:1fr;gap:28px}}
+  .roi-ctl{margin-bottom:22px}
+  .roi-lab{display:flex;justify-content:space-between;align-items:baseline;font-size:14px;color:#CBD5E3;margin-bottom:9px}
+  .roi-lab b{font-family:"IBM Plex Mono",monospace;color:var(--lamp);font-size:15px}
+  input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:5px;border-radius:3px;
+    background:linear-gradient(90deg,var(--lamp) var(--fill,50%),rgba(243,238,228,.14) var(--fill,50%));outline:none}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:20px;height:20px;border-radius:50%;
+    background:var(--lamp);border:3px solid #2A1B06;box-shadow:0 2px 10px rgba(245,177,76,.5);cursor:pointer}
+  input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--lamp);
+    border:3px solid #2A1B06;cursor:pointer}
+  .roi-note{font-size:12.5px;color:var(--slate);margin-top:6px}
+  .roi-out{display:flex;flex-direction:column;justify-content:center;gap:18px;border-left:1px solid var(--line-2);padding-left:38px}
+  @media(max-width:820px){.roi-out{border-left:none;padding-left:0;border-top:1px solid var(--line-2);padding-top:24px}}
+  .roi-big .n{font-family:"Fraunces",serif;font-size:46px;font-weight:600;color:var(--lamp);line-height:1.05}
+  .roi-big .l{font-size:13.5px;color:var(--slate);margin-top:4px}
+  .roi-row{display:flex;gap:26px}
+  .roi-mini .n{font-family:"Fraunces",serif;font-size:26px;font-weight:600;color:var(--cream)}
+  .roi-mini .l{font-size:12.5px;color:var(--slate);margin-top:2px}
+  .roi-kicker{font-size:13.5px;color:var(--teal);font-weight:600}
+
+  /* ===== Pricing ===== */
+  .price-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:760px;margin:0 auto}
+  @media(max-width:700px){.price-grid{grid-template-columns:1fr}}
+  .price-card{background:var(--ink-2);border:1px solid var(--line-2);border-radius:20px;padding:30px 28px;text-align:left;position:relative}
+  .price-card.founding{border-color:rgba(245,177,76,.55);background:linear-gradient(180deg,rgba(245,177,76,.07),var(--ink-2) 55%)}
+  .price-tag{position:absolute;top:-13px;left:24px;background:var(--lamp);color:#2A1B06;font-size:11.5px;font-weight:700;
+    letter-spacing:.06em;text-transform:uppercase;padding:5px 12px;border-radius:999px}
+  .price-name{font-size:15px;font-weight:600;color:#CBD5E3}
+  .price-amt{font-family:"Fraunces",serif;font-size:46px;font-weight:600;margin:10px 0 2px}
+  .price-amt span{font-size:16px;font-family:"IBM Plex Sans",sans-serif;color:var(--slate);font-weight:500}
+  .price-sub{font-size:13.5px;color:var(--slate);margin-bottom:16px}
+  .price-feats{list-style:none;margin:0 0 4px}
+  .price-feats li{font-size:14px;color:#CBD5E3;padding:6px 0 6px 24px;position:relative}
+  .price-feats li::before{content:"✓";position:absolute;left:0;color:var(--teal);font-weight:700}
+  .price-card.regular .price-amt{color:var(--slate)}
+  .pilot{max-width:760px;margin:22px auto 0;background:rgba(95,208,197,.08);border:1px solid rgba(95,208,197,.32);
+    border-radius:18px;padding:22px 26px;text-align:left;display:flex;gap:14px;align-items:flex-start}
+  .pilot .ic{flex:0 0 auto;font-size:20px}
+  .pilot b{color:var(--teal)}
+  .pilot p{font-size:14.5px;color:#CBD5E3;margin:0;line-height:1.55}
+
+  /* ===== About ===== */
+  .about-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:52px;align-items:center}
+  @media(max-width:820px){.about-grid{grid-template-columns:1fr;gap:34px}}
+  .hexwrap{position:relative;width:min(300px,72vw);margin:0 auto;filter:drop-shadow(0 24px 50px rgba(0,0,0,.55))}
+  .hex{clip-path:polygon(50% 7%,87% 28.5%,87% 71.5%,50% 93%,13% 71.5%,13% 28.5%);
+    background:var(--lamp);aspect-ratio:1/1;display:grid;place-items:center}
+  .hex-inner{clip-path:polygon(50% 7%,87% 28.5%,87% 71.5%,50% 93%,13% 71.5%,13% 28.5%);
+    width:calc(100% - 14px);height:calc(100% - 14px);background:var(--ink-3);display:grid;place-items:center;overflow:hidden}
+  .hex-inner img{width:100%;height:100%;object-fit:cover;object-position:center 22%}
+  .hex-fallback{font-family:"Fraunces",serif;font-weight:600;font-size:88px;color:var(--lamp)}
+  .about-txt p{font-size:15.5px;color:#CBD5E3;line-height:1.65;margin-bottom:16px}
+  .about-txt p b{color:var(--cream)}
+  .about-sign{font-family:"Fraunces",serif;font-style:italic;font-size:19px;color:var(--lamp);margin-top:4px}
+
   footer{border-top:1px solid var(--line-2);padding:40px 0;margin-top:20px}
   .foot-in{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
   .foot-in .logo{font-size:18px}
@@ -206,6 +264,8 @@
     <div class="nav-links">
       <a href="#how">How it works</a>
       <a href="#live">See it live</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#about">About</a>
       <a class="btn btn-primary nav-cta" href="#book">Book a demo</a>
     </div>
   </div>
@@ -301,6 +361,117 @@
   </div>
 </section>
 
+<!-- ===================== ROI CALCULATOR ===================== -->
+<section class="block" id="roi" style="background:var(--ink-2)">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">What's it worth?</span>
+      <h2>Do the maths on your missed enquiries.</h2>
+    </div>
+    <div class="roi-box">
+      <div>
+        <div class="roi-ctl">
+          <div class="roi-lab"><span>Missed calls &amp; after-hours enquiries per week</span><b id="roi-v-enq">5</b></div>
+          <input type="range" id="roi-enq" min="1" max="20" step="1" value="5" />
+        </div>
+        <div class="roi-ctl">
+          <div class="roi-lab"><span>Booked into an appointment when answered instantly</span><b id="roi-v-book">30%</b></div>
+          <input type="range" id="roi-book" min="10" max="60" step="5" value="30" />
+        </div>
+        <div class="roi-ctl">
+          <div class="roi-lab"><span>Appointments that end up settling</span><b id="roi-v-settle">25%</b></div>
+          <input type="range" id="roi-settle" min="10" max="50" step="5" value="25" />
+        </div>
+        <div class="roi-ctl">
+          <div class="roi-lab"><span>Average upfront commission per settlement</span><b id="roi-v-comm">$3,000</b></div>
+          <input type="range" id="roi-comm" min="1000" max="6000" step="250" value="3000" />
+        </div>
+        <div class="roi-note">Drag the sliders to match your book. Assumes enquiries you currently miss, not your existing pipeline.</div>
+      </div>
+      <div class="roi-out">
+        <div class="roi-big">
+          <div class="n" id="roi-rev">$0</div>
+          <div class="l">extra upfront commission per year</div>
+        </div>
+        <div class="roi-row">
+          <div class="roi-mini"><div class="n" id="roi-appts">0</div><div class="l">extra appointments / month</div></div>
+          <div class="roi-mini"><div class="n" id="roi-setts">0</div><div class="l">extra settlements / year</div></div>
+        </div>
+        <div class="roi-kicker" id="roi-kick">That's 0× what the assistant costs.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PRICING ===================== -->
+<section class="block" id="pricing">
+  <div class="wrap" style="text-align:center">
+    <div class="sec-head" style="margin-left:auto;margin-right:auto;text-align:center;max-width:none">
+      <span class="eyebrow" style="justify-content:center">Founding-member pricing</span>
+      <h2>Simple pricing. Locked in for backing it early.</h2>
+      <p style="color:var(--slate);max-width:52ch;margin:16px auto 0;font-size:15.5px">I'm looking for a small number of brokers to be the first to run this — and I want to earn your trust before I ask for full price.</p>
+    </div>
+    <div class="price-grid">
+      <div class="price-card founding">
+        <div class="price-tag">First 10 brokers</div>
+        <div class="price-name">Founding member</div>
+        <div class="price-amt">$249<span> /month</span></div>
+        <div class="price-sub">Locked in for life — your rate never rises.</div>
+        <ul class="price-feats">
+          <li>24/7 AI assistant on your website</li>
+          <li>Qualifies every enquiry &amp; books your calendar</li>
+          <li>Every lead emailed to you instantly</li>
+          <li>Set up &amp; supported personally by me</li>
+          <li>Founding rate kept forever</li>
+        </ul>
+      </div>
+      <div class="price-card regular">
+        <div class="price-name">Regular price</div>
+        <div class="price-amt">$499<span> /month</span></div>
+        <div class="price-sub">Once the 10 founding spots are filled.</div>
+        <ul class="price-feats">
+          <li>Same product, same support</li>
+          <li>Standard rate — no lock</li>
+        </ul>
+      </div>
+    </div>
+    <div class="pilot">
+      <div class="ic">🛡</div>
+      <p><b>Want proof first? The first 3 brokers get a free 60-day pilot.</b> I set it up on your site, you see exactly what it catches and books — no cost, no commitment. In return, I ask to share your results (with your permission) as a case study.</p>
+    </div>
+    <div style="margin-top:28px">
+      <a class="btn btn-primary" href="#book">Claim a founding spot</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ABOUT ===================== -->
+<section class="block" id="about" style="background:var(--ink-2)">
+  <div class="wrap">
+    <div class="about-grid">
+      <div class="hexwrap">
+        <div class="hex">
+          <div class="hex-inner">
+            <!-- Drop bailey.jpg next to index.html and the photo appears automatically -->
+            <img src="bailey.jpg" alt="Bailey — founder of SB AI Solutions"
+                 onerror="this.remove();document.getElementById('hex-fb').style.display='grid'" />
+            <div class="hex-fallback" id="hex-fb" style="display:none">SB</div>
+          </div>
+        </div>
+      </div>
+      <div class="about-txt">
+        <span class="eyebrow">About</span>
+        <h2 style="font-size:clamp(28px,3.6vw,40px);margin:16px 0 20px">I'm Bailey — I'm 17, and I built this.</h2>
+        <p>I started SB AI Solutions after noticing something simple: <b>brokers are flat out.</b> You're with a client, you're driving, it's 9pm — and while you're busy, the enquiry goes to whoever answers first. That's not a lead problem. It's a speed problem, and it's fixable.</p>
+        <p>So I built the fix. An AI that catches the calls and enquiries you miss, replies in seconds, works out what the customer needs, and books them straight into your calendar — day or night. It's built <b>compliance-safe</b>: it never quotes rates or borrowing capacity, and it has no access to your systems.</p>
+        <p>I do the calls, the demos, and the builds myself. So when you talk to me, <b>you're talking to the person who made it</b> — not a call centre.</p>
+        <p>Yes, I'm young. I'd rather you judge it on whether it books you appointments — which is exactly why I'm offering the first few brokers a <b>free 60-day pilot</b>. Prove it on your real leads, then decide.</p>
+        <div class="about-sign">— Bailey, founder</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="block book" id="book">
   <div class="wrap">
     <span class="eyebrow" style="justify-content:center">Book a demo</span>
@@ -367,7 +538,7 @@
 
   // Scroll-reveal for sections
   (function(){
-    var els = document.querySelectorAll('.feat, .step, .stat, .sec-head, .live, .book > .wrap > *');
+    var els = document.querySelectorAll('.feat, .step, .stat, .sec-head, .live, .roi-box, .price-card, .pilot, .about-grid, .book > .wrap > *');
     els.forEach(function(el){ el.style.opacity=0; el.style.transform='translateY(14px)'; el.style.transition='opacity .6s ease, transform .6s ease'; });
     if('IntersectionObserver' in window){
       var io = new IntersectionObserver(function(entries){
@@ -375,6 +546,46 @@
       },{threshold:.15});
       els.forEach(function(el){ io.observe(el); });
     } else { els.forEach(function(el){ el.style.opacity=1; el.style.transform='none'; }); }
+  })();
+
+  // ROI calculator — live maths on the sliders
+  (function(){
+    var COST_PER_YEAR = 249 * 12; // founding-member price
+    var ids = ['enq','book','settle','comm'];
+    function fmtMoney(n){ return '$' + Math.round(n).toLocaleString('en-AU'); }
+    function fill(el){ // paint the slider track up to the thumb
+      var pct = (el.value - el.min) / (el.max - el.min) * 100;
+      el.style.setProperty('--fill', pct + '%');
+    }
+    function calc(){
+      var enq = +document.getElementById('roi-enq').value;
+      var book = +document.getElementById('roi-book').value / 100;
+      var settle = +document.getElementById('roi-settle').value / 100;
+      var comm = +document.getElementById('roi-comm').value;
+
+      document.getElementById('roi-v-enq').textContent = enq;
+      document.getElementById('roi-v-book').textContent = Math.round(book*100) + '%';
+      document.getElementById('roi-v-settle').textContent = Math.round(settle*100) + '%';
+      document.getElementById('roi-v-comm').textContent = fmtMoney(comm);
+
+      var apptsYr = enq * 52 * book;
+      var settsYr = apptsYr * settle;
+      var revYr = settsYr * comm;
+
+      document.getElementById('roi-appts').textContent = (apptsYr/12).toFixed(1);
+      document.getElementById('roi-setts').textContent = Math.round(settsYr);
+      document.getElementById('roi-rev').textContent = fmtMoney(revYr);
+      var mult = revYr / COST_PER_YEAR;
+      document.getElementById('roi-kick').textContent =
+        'That’s ' + (mult >= 10 ? Math.round(mult) : mult.toFixed(1)) + '× what the assistant costs at founding pricing.';
+    }
+    ids.forEach(function(k){
+      var el = document.getElementById('roi-' + k);
+      if(!el) return;
+      el.addEventListener('input', function(){ fill(el); calc(); });
+      fill(el);
+    });
+    calc();
   })();
 
   // Book-a-demo form → emails the enquiry via FormSubmit (no backend needed).
