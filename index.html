@@ -186,29 +186,6 @@
   .bf-status.ok{color:var(--teal)}
   .bf-status.err{color:var(--lamp-soft)}
 
-  /* ===== ROI calculator ===== */
-  .roi-box{background:var(--ink-3);border:1px solid var(--line);border-radius:20px;padding:34px 30px;
-    display:grid;grid-template-columns:1.05fr .95fr;gap:40px}
-  @media(max-width:820px){.roi-box{grid-template-columns:1fr;gap:28px}}
-  .roi-ctl{margin-bottom:22px}
-  .roi-lab{display:flex;justify-content:space-between;align-items:baseline;font-size:14px;color:#CBD5E3;margin-bottom:9px}
-  .roi-lab b{font-family:"IBM Plex Mono",monospace;color:var(--lamp);font-size:15px}
-  input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:5px;border-radius:3px;
-    background:linear-gradient(90deg,var(--lamp) var(--fill,50%),rgba(243,238,228,.14) var(--fill,50%));outline:none}
-  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:20px;height:20px;border-radius:50%;
-    background:var(--lamp);border:3px solid #2A1B06;box-shadow:0 2px 10px rgba(245,177,76,.5);cursor:pointer}
-  input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--lamp);
-    border:3px solid #2A1B06;cursor:pointer}
-  .roi-note{font-size:12.5px;color:var(--slate);margin-top:6px}
-  .roi-out{display:flex;flex-direction:column;justify-content:center;gap:18px;border-left:1px solid var(--line-2);padding-left:38px}
-  @media(max-width:820px){.roi-out{border-left:none;padding-left:0;border-top:1px solid var(--line-2);padding-top:24px}}
-  .roi-big .n{font-family:"Fraunces",serif;font-size:46px;font-weight:600;color:var(--lamp);line-height:1.05}
-  .roi-big .l{font-size:13.5px;color:var(--slate);margin-top:4px}
-  .roi-row{display:flex;gap:26px}
-  .roi-mini .n{font-family:"Fraunces",serif;font-size:26px;font-weight:600;color:var(--cream)}
-  .roi-mini .l{font-size:12.5px;color:var(--slate);margin-top:2px}
-  .roi-kicker{font-size:13.5px;color:var(--teal);font-weight:600}
-
   /* ===== Pricing ===== */
   .price-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;max-width:1040px;margin:0 auto}
   @media(max-width:900px){.price-grid{grid-template-columns:1fr;max-width:480px}}
@@ -367,46 +344,143 @@
   </div>
 </section>
 
-<!-- ===================== ROI CALCULATOR ===================== -->
+<!-- ===================== ROI CALCULATOR (exact spec) ===================== -->
 <section class="block" id="roi" style="background:var(--ink-2)">
   <div class="wrap">
     <div class="sec-head">
-      <span class="eyebrow">What's it worth?</span>
-      <h2>Do the maths on your missed enquiries.</h2>
+      <span class="eyebrow">The maths</span>
+      <h2>How much is &ldquo;they'll call back&rdquo; costing you?</h2>
+      <p style="color:var(--slate);margin-top:16px;font-size:16px;max-width:52ch">
+        Drag the sliders to match your week. The maths uses the standard
+        0.65% upfront commission &mdash; this is your money, not ours.
+      </p>
     </div>
-    <div class="roi-box">
-      <div>
-        <div class="roi-ctl">
-          <div class="roi-lab"><span>Missed calls &amp; after-hours enquiries per week</span><b id="roi-v-enq">5</b></div>
-          <input type="range" id="roi-enq" min="1" max="20" step="1" value="5" />
+
+    <div class="roi-grid">
+      <!-- inputs -->
+      <div class="roi-inputs">
+        <div class="roi-field">
+          <label for="roiMissed">Enquiries you miss each month
+            <span class="roi-hint">missed calls + after-hours messages</span>
+          </label>
+          <div class="roi-row">
+            <input type="range" id="roiMissed" min="2" max="40" step="1" value="6">
+            <output class="roi-val mono" id="roiMissedVal">6</output>
+          </div>
         </div>
-        <div class="roi-ctl">
-          <div class="roi-lab"><span>Booked into an appointment when answered instantly</span><b id="roi-v-book">30%</b></div>
-          <input type="range" id="roi-book" min="10" max="60" step="5" value="30" />
+
+        <div class="roi-field">
+          <label for="roiLoan">Average loan size
+            <span class="roi-hint">your typical settlement</span>
+          </label>
+          <div class="roi-row">
+            <input type="range" id="roiLoan" min="300000" max="1500000" step="50000" value="600000">
+            <output class="roi-val mono" id="roiLoanVal">$600k</output>
+          </div>
         </div>
-        <div class="roi-ctl">
-          <div class="roi-lab"><span>Appointments that end up settling</span><b id="roi-v-settle">25%</b></div>
-          <input type="range" id="roi-settle" min="10" max="50" step="5" value="25" />
+
+        <div class="roi-field">
+          <label for="roiSettle">Your settle rate on leads you actually speak to
+            <span class="roi-hint">enquiry &rarr; settled loan</span>
+          </label>
+          <div class="roi-row">
+            <input type="range" id="roiSettle" min="5" max="40" step="1" value="15">
+            <output class="roi-val mono" id="roiSettleVal">15%</output>
+          </div>
         </div>
-        <div class="roi-ctl">
-          <div class="roi-lab"><span>Average upfront commission per settlement</span><b id="roi-v-comm">$3,000</b></div>
-          <input type="range" id="roi-comm" min="1000" max="6000" step="250" value="3000" />
-        </div>
-        <div class="roi-note">Drag the sliders to match your book. Assumes enquiries you currently miss, not your existing pipeline.</div>
+
+        <p class="roi-fine">
+          Assumes 60% of missed enquiries are genuine new business, and 80% of
+          callers who can't reach you never try again &mdash; they ring the next
+          broker on Google. Trail commission not included (add ~0.15% p.a. on
+          every recovered loan, every year).
+        </p>
       </div>
-      <div class="roi-out">
-        <div class="roi-big">
-          <div class="n" id="roi-rev">$0</div>
-          <div class="l">extra upfront commission per year</div>
+
+      <!-- result -->
+      <div class="roi-result">
+        <div class="roi-res-label mono">WALKING OUT THE DOOR EACH YEAR</div>
+        <div class="roi-big" id="roiLost">$0</div>
+        <div class="roi-sub">in upfront commission alone</div>
+
+        <div class="roi-lines">
+          <div class="roi-line"><span id="roiLoans">0</span> settled loans a year going to whoever answered first</div>
+          <div class="roi-line">+ <span id="roiTrail">$0</span>/yr in trail commission, compounding every year</div>
+          <div class="roi-line roi-line-teal">One recovered settlement pays for your AI front desk for <span id="roiPayback">0</span></div>
         </div>
-        <div class="roi-row">
-          <div class="roi-mini"><div class="n" id="roi-appts">0</div><div class="l">extra appointments / month</div></div>
-          <div class="roi-mini"><div class="n" id="roi-setts">0</div><div class="l">extra settlements / year</div></div>
-        </div>
-        <div class="roi-kicker" id="roi-kick">That's 0× what the assistant costs.</div>
+
+        <a class="btn btn-primary" href="#book" style="margin-top:26px">Stop the leak &mdash; book a demo</a>
       </div>
     </div>
   </div>
+
+  <style>
+    #roi .roi-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:28px;align-items:stretch}
+    @media(max-width:860px){#roi .roi-grid{grid-template-columns:1fr}}
+    #roi .roi-inputs{background:var(--ink-3);border:1px solid var(--line-2);border-radius:18px;padding:30px 28px}
+    #roi .roi-field{margin-bottom:26px}
+    #roi .roi-field label{display:block;font-size:15px;font-weight:600;margin-bottom:4px}
+    #roi .roi-hint{display:block;font-size:12.5px;color:var(--slate);font-weight:400;margin-top:2px}
+    #roi .roi-row{display:flex;align-items:center;gap:16px;margin-top:12px}
+    #roi input[type=range]{flex:1;appearance:none;-webkit-appearance:none;height:6px;border-radius:3px;background:rgba(243,238,228,.14);outline:none}
+    #roi input[type=range]::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--lamp);cursor:pointer;box-shadow:0 0 0 5px rgba(245,177,76,.18)}
+    #roi input[type=range]::-moz-range-thumb{width:20px;height:20px;border:none;border-radius:50%;background:var(--lamp);cursor:pointer;box-shadow:0 0 0 5px rgba(245,177,76,.18)}
+    #roi .roi-val{min-width:74px;text-align:right;font-size:15px;color:var(--lamp);font-weight:500}
+    #roi .roi-fine{font-size:12.5px;color:var(--slate);line-height:1.55;border-top:1px solid var(--line-2);padding-top:16px;margin-top:4px}
+    #roi .roi-result{background:linear-gradient(180deg,var(--ink-3),var(--ink-2));border:1px solid rgba(245,177,76,.22);border-radius:18px;padding:34px 30px;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden}
+    #roi .roi-result::before{content:"";position:absolute;top:-40%;right:-20%;width:70%;height:90%;background:radial-gradient(circle,rgba(245,177,76,.13),transparent 65%);pointer-events:none}
+    #roi .roi-res-label{font-size:11.5px;letter-spacing:.16em;color:var(--slate)}
+    #roi .roi-big{font-family:"Fraunces",Georgia,serif;font-weight:600;font-size:clamp(44px,6vw,64px);color:var(--lamp);line-height:1.05;margin-top:10px}
+    #roi .roi-sub{font-size:14.5px;color:var(--slate);margin-top:6px}
+    #roi .roi-lines{margin-top:24px;display:flex;flex-direction:column;gap:10px}
+    #roi .roi-line{font-size:14.5px;color:#CBD5E3;padding-left:18px;position:relative}
+    #roi .roi-line::before{content:"→";position:absolute;left:0;color:var(--lamp)}
+    #roi .roi-line span{color:var(--cream);font-weight:600}
+    #roi .roi-line-teal, #roi .roi-line-teal span{color:var(--teal) !important}
+  </style>
+
+  <script>
+    (function(){
+      // ---- editable assumptions ----
+      var UPFRONT = 0.0065;     // upfront commission
+      var TRAIL = 0.0015;       // trail p.a.
+      var GENUINE = 0.60;       // share of missed enquiries that are real new business
+      var GONE = 0.80;          // share of unanswered callers who never come back
+      var PRICE_PM = 249;       // your monthly price — update when you set it
+      // ------------------------------
+
+      var $ = function(id){ return document.getElementById(id); };
+      var missed = $('roiMissed'), loan = $('roiLoan'), settle = $('roiSettle');
+
+      function aud(n){
+        if(n >= 1000000) return '$' + (n/1000000).toFixed(2) + 'M';
+        return '$' + Math.round(n).toLocaleString('en-AU');
+      }
+      function loank(n){ return n >= 1000000 ? '$' + (n/1000000).toFixed(2) + 'M' : '$' + Math.round(n/1000) + 'k'; }
+
+      function calc(){
+        var m = +missed.value, l = +loan.value, s = +settle.value/100;
+        $('roiMissedVal').textContent = m;
+        $('roiLoanVal').textContent = loank(l);
+        $('roiSettleVal').textContent = Math.round(s*100) + '%';
+
+        var lostLoansYr = m * 12 * GENUINE * GONE * s;
+        var lostUpfront = lostLoansYr * l * UPFRONT;
+        var trailYr = lostLoansYr * l * TRAIL;
+        var perLoan = l * UPFRONT;
+        var paybackMonths = perLoan / PRICE_PM;
+
+        $('roiLost').textContent = aud(lostUpfront);
+        $('roiLoans').textContent = (Math.round(lostLoansYr*10)/10).toLocaleString('en-AU');
+        $('roiTrail').textContent = aud(trailYr);
+        $('roiPayback').textContent = paybackMonths >= 24
+          ? (Math.round(paybackMonths/12*10)/10) + ' years'
+          : Math.round(paybackMonths) + ' months';
+      }
+      [missed, loan, settle].forEach(function(el){ el.addEventListener('input', calc); });
+      calc();
+    })();
+  </script>
 </section>
 
 <!-- ===================== PRICING ===================== -->
@@ -563,45 +637,6 @@
     } else { els.forEach(function(el){ el.style.opacity=1; el.style.transform='none'; }); }
   })();
 
-  // ROI calculator — live maths on the sliders
-  (function(){
-    var COST_PER_YEAR = 249 * 12; // founding-member price
-    var ids = ['enq','book','settle','comm'];
-    function fmtMoney(n){ return '$' + Math.round(n).toLocaleString('en-AU'); }
-    function fill(el){ // paint the slider track up to the thumb
-      var pct = (el.value - el.min) / (el.max - el.min) * 100;
-      el.style.setProperty('--fill', pct + '%');
-    }
-    function calc(){
-      var enq = +document.getElementById('roi-enq').value;
-      var book = +document.getElementById('roi-book').value / 100;
-      var settle = +document.getElementById('roi-settle').value / 100;
-      var comm = +document.getElementById('roi-comm').value;
-
-      document.getElementById('roi-v-enq').textContent = enq;
-      document.getElementById('roi-v-book').textContent = Math.round(book*100) + '%';
-      document.getElementById('roi-v-settle').textContent = Math.round(settle*100) + '%';
-      document.getElementById('roi-v-comm').textContent = fmtMoney(comm);
-
-      var apptsYr = enq * 52 * book;
-      var settsYr = apptsYr * settle;
-      var revYr = settsYr * comm;
-
-      document.getElementById('roi-appts').textContent = (apptsYr/12).toFixed(1);
-      document.getElementById('roi-setts').textContent = Math.round(settsYr);
-      document.getElementById('roi-rev').textContent = fmtMoney(revYr);
-      var mult = revYr / COST_PER_YEAR;
-      document.getElementById('roi-kick').textContent =
-        'That’s ' + (mult >= 10 ? Math.round(mult) : mult.toFixed(1)) + '× what the assistant costs at founding pricing.';
-    }
-    ids.forEach(function(k){
-      var el = document.getElementById('roi-' + k);
-      if(!el) return;
-      el.addEventListener('input', function(){ fill(el); calc(); });
-      fill(el);
-    });
-    calc();
-  })();
 
   // Book-a-demo form → emails the enquiry via FormSubmit (no backend needed).
   (function(){
@@ -673,6 +708,50 @@
   data-nudge="👋 Want to see it in action? Book a quick call with us."
   async
 ></script>
+
+<!-- Always open the site at the top (browsers otherwise restore your last scroll spot) -->
+<script>
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  window.addEventListener('load', function () {
+    if (!location.hash) window.scrollTo(0, 0);
+  });
+</script>
+
+<!-- ROI calculator bubble — stacked ABOVE the "Book a call" bubble (bottom-left) -->
+<style>
+  .roi-bubble{
+    position:fixed; left:20px; bottom:92px; z-index:2147482999;
+    display:inline-flex; align-items:center; gap:11px; height:54px;
+    padding:8px 20px 8px 9px; border:none; border-radius:30px; cursor:pointer;
+    background:#13233A; color:#F3EEE4; border:1px solid rgba(245,177,76,.5);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    box-shadow:0 10px 28px rgba(0,0,0,.4); transition:transform .15s ease, opacity .2s ease;
+  }
+  .roi-bubble:hover{transform:translateY(-1px) scale(1.02)}
+  .roi-bubble.hidden{opacity:0;pointer-events:none}
+  .roi-bubble .ic{
+    flex:0 0 auto;width:38px;height:38px;border-radius:50%;background:rgba(245,177,76,.16);
+    display:grid;place-items:center;font-size:18px;
+  }
+  .roi-bubble .tx{display:flex;flex-direction:column;align-items:flex-start;line-height:1.15;text-align:left}
+  .roi-bubble .t1{font-weight:700;font-size:14px;letter-spacing:-.01em}
+  .roi-bubble .t2{font-size:11.5px;opacity:.75;margin-top:1px}
+  @media(max-width:480px){.roi-bubble{left:16px;bottom:82px;height:50px}.roi-bubble .t2{display:none}}
+</style>
+<button class="roi-bubble" id="roiBubble" onclick="document.getElementById('roi').scrollIntoView({behavior:'smooth'})">
+  <span class="ic">📊</span>
+  <span class="tx"><span class="t1">ROI calculator</span><span class="t2">What are you losing?</span></span>
+</button>
+<script>
+  // Tuck the ROI bubble away while a chat panel is open so they never overlap.
+  (function () {
+    var btn = document.getElementById('roiBubble');
+    setInterval(function () {
+      var open = document.querySelector('.sbb-wrap.sbb-open');
+      btn.classList.toggle('hidden', !!open);
+    }, 400);
+  })();
+</script>
 
 <!-- RIGHT: let visitors test our AI product live (opens the demo assistant) -->
 <script
