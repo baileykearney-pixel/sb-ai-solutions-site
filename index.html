@@ -12,6 +12,26 @@
      Everything else (name, contact, booking-by-email) is done.
      ============================================================ -->
 
+<!-- Always open on the hero, never where you last scrolled to.
+     Must run in <head> — browsers restore scroll before <body> scripts run. -->
+<script>
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  (function () {
+    if (location.hash) return;             // let #pricing etc. still work
+    function top() { window.scrollTo(0, 0); }
+    top();
+    document.addEventListener('DOMContentLoaded', top);
+    window.addEventListener('load', function () {
+      top();
+      // hold it at the top briefly while fonts/images settle the layout
+      var n = 0, id = setInterval(function () { top(); if (++n > 6) clearInterval(id); }, 60);
+      // …but stop the moment the visitor scrolls themselves
+      window.addEventListener('wheel', function () { clearInterval(id); }, { once: true, passive: true });
+      window.addEventListener('touchstart', function () { clearInterval(id); }, { once: true, passive: true });
+    });
+  })();
+</script>
+
 <title>SB AI Solutions — AI front desk for mortgage brokers</title>
 <meta name="description" content="An AI assistant that answers your missed calls and after-hours enquiries in seconds, qualifies the lead, and books the appointment — so you stop losing deals to whoever replied first." />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='M128 18 L223 73 L223 183 L128 238 L33 183 L33 73 Z' fill='%231E293B'/%3E%3Cpath d='M128 18 L223 73 L223 183 L128 238 L33 183 L33 73 Z' fill='none' stroke='%23F5B14C' stroke-width='9'/%3E%3Ctext x='128' y='162' text-anchor='middle' font-family='Georgia,serif' font-weight='700' font-size='96' fill='%23F5B14C'%3ESB%3C/text%3E%3C/svg%3E" />
@@ -219,7 +239,17 @@
     background:var(--lamp);aspect-ratio:1/1;display:grid;place-items:center}
   .hex-inner{clip-path:polygon(50% 7%,87% 28.5%,87% 71.5%,50% 93%,13% 71.5%,13% 28.5%);
     width:calc(100% - 14px);height:calc(100% - 14px);background:var(--ink-3);display:grid;place-items:center;overflow:hidden}
-  .hex-inner img{width:100%;height:100%;object-fit:cover;object-position:center 22%}
+  /* Photo crop inside the diamond.
+     --face-y: lower % = photo sits lower (shows more head-room)
+               higher % = photo rides up. Nudge this to re-centre the face.
+     --face-zoom: how tight the crop is on the face. */
+  .hex-inner{--face-x:52%; --face-y:12%; --face-zoom:1.12}
+  .hex-inner img{
+    width:100%;height:100%;object-fit:cover;
+    object-position:var(--face-x) var(--face-y);
+    transform:scale(var(--face-zoom));
+    transform-origin:var(--face-x) 34%;
+  }
   .hex-fallback{font-family:"Fraunces",serif;font-weight:600;font-size:88px;color:var(--lamp)}
   .about-txt p{font-size:15.5px;color:#CBD5E3;line-height:1.65;margin-bottom:16px}
   .about-txt p b{color:var(--cream)}
@@ -708,14 +738,6 @@
   data-nudge="👋 Want to see it in action? Book a quick call with us."
   async
 ></script>
-
-<!-- Always open the site at the top (browsers otherwise restore your last scroll spot) -->
-<script>
-  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
-  window.addEventListener('load', function () {
-    if (!location.hash) window.scrollTo(0, 0);
-  });
-</script>
 
 <!-- ROI calculator bubble — stacked ABOVE the "Book a call" bubble (bottom-left) -->
 <style>
