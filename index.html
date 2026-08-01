@@ -243,12 +243,12 @@
      --face-y: lower % = photo sits lower (shows more head-room)
                higher % = photo rides up. Nudge this to re-centre the face.
      --face-zoom: how tight the crop is on the face. */
-  .hex-inner{--face-x:52%; --face-y:12%; --face-zoom:1.12}
+  .hex-inner{--face-y:19%; --face-nudge-x:-4%; --face-zoom:1.12}
   .hex-inner img{
     width:100%;height:100%;object-fit:cover;
-    object-position:var(--face-x) var(--face-y);
-    transform:scale(var(--face-zoom));
-    transform-origin:var(--face-x) 34%;
+    object-position:center var(--face-y);
+    transform:translateX(var(--face-nudge-x)) scale(var(--face-zoom));
+    transform-origin:center;
   }
   .hex-fallback{font-family:"Fraunces",serif;font-weight:600;font-size:88px;color:var(--lamp)}
   .about-txt p{font-size:15.5px;color:#CBD5E3;line-height:1.65;margin-bottom:16px}
